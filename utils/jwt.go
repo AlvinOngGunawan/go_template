@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func GenerateJWT(userID int64, secret string) (string, error) {
+func GenerateJWT(userID int, secret string) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userID,
 		"exp":     time.Now().Add(72 * time.Hour).Unix(),

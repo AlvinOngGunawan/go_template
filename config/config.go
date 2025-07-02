@@ -12,5 +12,9 @@ type AppConfig struct {
 	DBUser    string `env:"DB_USER"`
 	DBPass    string `env:"DB_PASS"`
 	DBName    string `env:"DB_NAME"`
+	RedisHost string `env:"REDIS_HOST"`
+	RedisPort string `env:"REDIS_PORT"`
+	RedisPass string `env:"REDIS_PASS"`
+	RedisDB   int    `env:"REDIS_DB"`
 	JWTSecret string `env:"JWT_SECRET"`
 }

@@ -1,26 +1,24 @@
-package handler
+package user
 
 import (
 	"Test_Go/config"
-	"Test_Go/dto/in"
 	error2 "Test_Go/error"
-	"Test_Go/service/user"
 	"Test_Go/utils"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
 type UserHandler struct {
-	svc    user.UserService
+	svc    UserService
 	config config.AppConfig
 }
 
-func NewUserHandler(config config.AppConfig, s user.UserService) UserHandler {
+func NewUserHandler(config config.AppConfig, s UserService) UserHandler {
 	return UserHandler{svc: s, config: config}
 }
 
 func (h *UserHandler) Register(c echo.Context) error {
-	var req in.User
+	var req UserIn
 	if err := c.Bind(&req); err != nil {
 		return error2.JSON(c, http.StatusBadRequest, error2.Error{Error: err}, err)
 	}
@@ -31,7 +29,7 @@ func (h *UserHandler) Register(c echo.Context) error {
 }
 
 func (h *UserHandler) Login(c echo.Context) error {
-	var req in.User
+	var req UserIn
 	if err := c.Bind(&req); err != nil {
 		return error2.JSON(c, http.StatusBadRequest, error2.Error{Error: err}, err)
 	}
@@ -39,7 +37,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 	if err != nil {
 		return error2.JSON(c, http.StatusUnauthorized, error2.Error{Error: err}, err)
 	}
-	token, _ := utils.GenerateJWT(user.ID.Int64, h.config.JWTSecret)
+	token, _ := utils.GenerateJWT(user.ID, h.config.JWTSecret)
 	return error2.JSON(c, http.StatusOK, token, nil)
 }
 

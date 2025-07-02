@@ -1,24 +1,23 @@
 package server
 
 import (
+	user2 "Test_Go/app/user"
 	"Test_Go/config"
-	"Test_Go/handler"
-	"Test_Go/repository"
-	"Test_Go/service/user"
-	"database/sql"
+	"github.com/bsm/redislock"
 	"github.com/caarlos0/env/v10"
+	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
+	"github.com/redis/go-redis/v9"
 )
 
 type ServerAttribute struct {
-	Config     config.AppConfig
-	Server     *echo.Echo
-	DB         *sql.DB
-	Services   Services
-	Repository Repository
-	Handler    Handler
-	Endpoint   Endpoint
+	Config    config.AppConfig
+	Server    *echo.Echo
+	DB        *sqlx.DB
+	Redis     *redis.Client
+	RedisLock *redislock.Client
+	Module    Module
 }
 
 func (s *ServerAttribute) LoadConfig() {
@@ -27,19 +26,6 @@ func (s *ServerAttribute) LoadConfig() {
 	}
 }
 
-type Services struct {
-	userService user.UserService
-}
-
-type Repository struct {
-	userRepository repository.UserRepository
-}
-
-type Handler struct {
-	userHandler     handler.UserHandler
-	categoryHandler handler.CategoryHandler
-}
-
-type Endpoint struct {
-	jwtGroup *echo.Group
+type Module struct {
+	UserModule *user2.UserModule
 }

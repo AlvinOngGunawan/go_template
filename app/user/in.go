@@ -1,6 +1,6 @@
-package in
+package user
 
-type User struct {
+type UserIn struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
