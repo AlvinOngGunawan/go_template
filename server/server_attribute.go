@@ -1,7 +1,8 @@
 package server
 
 import (
-	user2 "Test_Go/app/user"
+	"Test_Go/app/export"
+	"Test_Go/app/user"
 	"Test_Go/config"
 	"github.com/bsm/redislock"
 	"github.com/caarlos0/env/v10"
@@ -27,5 +28,6 @@ func (s *ServerAttribute) LoadConfig() {
 }
 
 type Module struct {
-	UserModule *user2.UserModule
+	ExportModule *export.ExportModule
+	UserModule   *user.UserModule
 }

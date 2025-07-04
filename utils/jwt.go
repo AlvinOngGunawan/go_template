@@ -15,8 +15,8 @@ func GenerateJWT(userID int, secret string) (string, error) {
 	return token.SignedString([]byte(secret))
 }
 
-func GetUserIDFromToken(c echo.Context) uint {
+func GetUserIDFromToken(c echo.Context) int {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
-	return uint(claims["user_id"].(float64))
+	return int(claims["uid"].(float64))
 }

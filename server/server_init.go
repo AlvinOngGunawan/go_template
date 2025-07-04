@@ -28,6 +28,7 @@ func (s *ServerAttribute) InitServer() (err error) {
 	s.Server.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: constanta.LoggerFormat,
 	}))
+	s.Server.Use(middleware.CORS())
 
 	_ = godotenv.Load()
 	s.LoadConfig()
@@ -61,9 +62,9 @@ func (s *ServerAttribute) InitDB() (*sqlx.DB, error) {
 		return nil, err
 	}
 
-	if err := runMigrations(db); err != nil {
-		return nil, err
-	}
+	//if err = runMigrations(db); err != nil {
+	//	return nil, err
+	//}
 
 	return db, nil
 }
@@ -91,7 +92,7 @@ func runMigrations(db *sqlx.DB) error {
 	return nil
 }
 
-func (s *ServerAttribute) initRedis() error {
+func (s *ServerAttribute) initRedis() (err error) {
 	s.Redis = redis.NewClient(&redis.Options{
 		Addr:     s.Config.RedisHost + ":" + s.Config.RedisPort,
 		Password: s.Config.RedisPort,
@@ -100,12 +101,12 @@ func (s *ServerAttribute) initRedis() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	if err := s.Redis.Ping(ctx).Err(); err != nil {
-		//should be return error, but now optional
+	if err = s.Redis.Ping(ctx).Err(); err != nil {
+		//optional to connect redis
 		return nil
 	}
 
 	s.RedisLock = redislock.New(s.Redis)
 
-	return nil
+	return
 }

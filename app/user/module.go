@@ -8,20 +8,13 @@ import (
 )
 
 type UserModule struct {
-	UserService    UserService
-	UserHandler    UserHandler
 	UserRepository UserRepository
 }
 
 func NewUserModule(db *sqlx.DB, config config.AppConfig, redis *redis.Client, endpoint *echo.Echo) *UserModule {
 	userRepository := NewUserRepository(db)
-	userService := NewUserService(userRepository)
-	userHandler := NewUserHandler(config, userService)
-	InitRoutes(endpoint, userHandler, config)
 
 	return &UserModule{
-		UserService:    userService,
-		UserHandler:    userHandler,
 		UserRepository: userRepository,
 	}
 }

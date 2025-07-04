@@ -16,7 +16,7 @@ type Error struct {
 	Error error
 }
 
-func JSON(c echo.Context, status int, data interface{}, err interface{}) error {
+func JSON(c echo.Context, status int, data interface{}, err string) error {
 	requestID := c.Get("request_id")
 	return c.JSON(status, &Response{
 		RequestID: requestID.(string),

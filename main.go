@@ -6,6 +6,13 @@ import (
 
 func main() {
 	serverAttr := &server.ServerAttribute{}
+
+	defer func() {
+		if err := serverAttr.DB.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
 	err := serverAttr.InitServer()
 	if err != nil {
 		panic(err)
