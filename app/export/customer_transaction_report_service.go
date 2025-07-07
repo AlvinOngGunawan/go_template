@@ -80,7 +80,7 @@ func (s *ExportService) generateExcelTransactionCustomerFromDB(headers []interfa
 
 		cell := fmt.Sprintf("A%d", rowIndex)
 
-		result := []interface{}{i.CreatedAt.Time.Format("2006-01-02"), i.CustomerName.String, typeOfTransaction[i.Type.Int64], i.Amount.Int64,
+		result := []interface{}{i.CreatedAt.Time.Format("02-01-2006"), i.CustomerName.String, typeOfTransaction[i.Type.Int64], i.Amount.Int64,
 			i.CreditChange.Int64, i.CreditAfter.Int64, i.DebtChange.Int64, i.DebtAfter.Int64, i.FullName.String, i.Params.String}
 		err = streamWriter.SetRow(cell, result)
 		if err != nil {

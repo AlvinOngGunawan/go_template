@@ -121,9 +121,9 @@ func (s *ExportService) generateExcelSalesReportInvoiceFromDB(headers []interfac
 
 		cell := fmt.Sprintf("A%d", rowIndex)
 
-		result := []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.Fullname.String, s.resolveStatus(i.Status.Int64),
+		result := []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.Fullname.String, s.resolveStatus(i.Status.Int64),
 			i.WarehouseName.String, i.OfficeName.String, s.resolvePriceSegmentName(i.PriceSegment.Int64), i.ItemCount.Int64, i.SubTotal.String, i.Discount.Float64,
-			i.DiscountValue.Int64, i.Total.Int64, i.TotalReturn.Int64, i.OutstandingPayment.Int64, i.LastPayment.Time.Format("2006-01-02"), i.Note.String, i.DivisionName.String}
+			i.DiscountValue.Int64, i.Total.Int64, i.TotalReturn.Int64, i.OutstandingPayment.Int64, i.LastPayment.Time.Format("02-01-2006"), i.Note.String, i.DivisionName.String}
 		err = streamWriter.SetRow(cell, result)
 		if err != nil {
 			return nil, err
@@ -181,14 +181,14 @@ func (s *ExportService) generateExcelSalesReportInvoiceDetailFromDB(headers []in
 		var result []interface{}
 
 		if admin {
-			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.IMEISN.String,
-				i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.IMEISN.String,
+				i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
 				i.TypeName.String, i.Year.String, i.SpecName.String, i.Batangan.String, i.Grade.String, i.GradePGI.String, i.PriceAtPawn.Int64, i.GradeAPrice.Int64, i.AdjGrade.Int64,
 				i.AdjSpec.Int64, i.AdjBatangan.Int64, i.AdjOther.Int64, i.Adjustment.Int64, i.AdjPriceSeg.Int64, i.DiscountValue.Int64, i.Total.Int64, i.Capital.Int64, i.PL.Int64,
 				i.Notes.String, i.AdjOtherNote.String}
 		} else {
-			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.IMEISN.String,
-				i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.IMEISN.String,
+				i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
 				i.TypeName.String, i.Year.String, i.SpecName.String, i.Batangan.String, i.Grade.String, i.GradePGI.String, i.Adjustment.Int64, i.AdjPriceSeg.Int64, i.DiscountValue.Int64, i.Total.Int64,
 				i.Notes.String}
 		}
@@ -307,9 +307,9 @@ func (s *ExportService) generateExcelSalesReportInvoiceReturnFromDB(headers []in
 		cell := fmt.Sprintf("A%d", rowIndex)
 		var result []interface{}
 
-		result = []interface{}{i.No.String, i.NoFaktur.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.NoRef.String, i.IMEISN.String,
-			i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
-			i.TypeName.String, i.Year.String, i.SpecName.String, i.Batangan.String, i.Grade.String, i.GradePGI.String, i.Total.Int64, i.CreatedAtReturn.Time.Format("2006-01-02"),
+		result = []interface{}{i.No.String, i.NoFaktur.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.NoRef.String, i.IMEISN.String,
+			i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+			i.TypeName.String, i.Year.String, i.SpecName.String, i.Batangan.String, i.Grade.String, i.GradePGI.String, i.Total.Int64, i.CreatedAtReturn.Time.Format("02-01-2006"),
 			i.FullName.String, i.ReturnReason.String}
 
 		err = streamWriter.SetRow(cell, result)

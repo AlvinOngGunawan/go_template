@@ -291,3 +291,164 @@ type DeliveryBatchItemReport struct {
 	ApprovedAt         sql.NullTime   `db:"approved_at"`
 	Description        sql.NullString `db:"description"`
 }
+
+type DeliveryBatchItemGoldEXTReport struct {
+	Date            sql.NullTime    `db:"date"`
+	Branch          sql.NullString  `db:"branch"`
+	Source          sql.NullString  `db:"source"`
+	NoFakturPGI     sql.NullString  `db:"no_faktur_pgi"`
+	IMEISN          sql.NullString  `db:"imei_sn"`
+	KindName        sql.NullString  `db:"kind_name"`
+	BrandName       sql.NullString  `db:"brand_name"`
+	TypeName        sql.NullString  `db:"type_name"`
+	Purity          sql.NullInt64   `db:"purity"`
+	DryWeight       sql.NullFloat64 `db:"dry_weight"`
+	WeightReduction sql.NullFloat64 `db:"weight_reduction"`
+	NetWeight       sql.NullString  `db:"net_weight"`
+	GoldMintMark    sql.NullString  `db:"gold_mint_mark_name"`
+	GoldType        sql.NullString  `db:"name"`
+	PieceCount      sql.NullInt64   `db:"piece_count"`
+	Status          sql.NullInt64   `db:"status"`
+	WarehouseName   sql.NullString  `db:"warehouse_name"`
+	IsCap           sql.NullString  `db:"is_cap"`
+	FullName        sql.NullString  `db:"fullname"`
+	ApprovedAt      sql.NullTime    `db:"approved_at"`
+	Description     sql.NullString  `db:"description"`
+	ItemKindID      sql.NullInt64   `db:"item_kind_id"`
+	ItemTypeID      sql.NullInt64   `db:"type_id"`
+}
+
+type DeliveryBatchItemGoldReport struct {
+	Date            sql.NullTime    `db:"date"`
+	Branch          sql.NullString  `db:"branch"`
+	Source          sql.NullString  `db:"source"`
+	NoFakturPGI     sql.NullString  `db:"no_faktur_pgi"`
+	IMEISN          sql.NullString  `db:"imei_sn"`
+	KindName        sql.NullString  `db:"kind_name"`
+	BrandName       sql.NullString  `db:"brand_name"`
+	TypeName        sql.NullString  `db:"type_name"`
+	Purity          sql.NullInt64   `db:"pgi_purity"`
+	DryWeight       sql.NullFloat64 `db:"pgi_dry_weight"`
+	WeightReduction sql.NullFloat64 `db:"pgi_weight_reduction"`
+	NetWeight       sql.NullString  `db:"net_weight"`
+	GoldMintMark    sql.NullString  `db:"gold_mint_mark_name"`
+	GoldType        sql.NullString  `db:"name"`
+	PieceCount      sql.NullInt64   `db:"piece_count"`
+	PawnedAt        sql.NullTime    `db:"pawned_at"`
+	Status          sql.NullInt64   `db:"status"`
+	GradePGI        sql.NullString  `db:"grade_pgi"`
+	PriceAtPawn     sql.NullInt64   `db:"price_at_pawn"`
+	WarehouseName   sql.NullString  `db:"warehouse_name"`
+	IsCap           sql.NullString  `db:"is_cap"`
+	FullName        sql.NullString  `db:"fullname"`
+	ApprovedAt      sql.NullTime    `db:"approved_at"`
+	Description     sql.NullString  `db:"description"`
+	ItemKindID      sql.NullInt64   `db:"item_kind_id"`
+	ItemTypeID      sql.NullInt64   `db:"type_id"`
+}
+
+type InventoryMovementReport struct {
+	ID             sql.NullInt64  `db:"id"`
+	NoFaktur       sql.NullString `db:"no_faktur"`
+	NoRef          sql.NullString `db:"no_ref"`
+	MoveDate       sql.NullTime   `db:"move_date"`
+	ConfirmedAt    sql.NullTime   `db:"confirmed_at"`
+	FullName       sql.NullString `db:"fullname"`
+	Status         sql.NullString `db:"status"`
+	FromName       sql.NullString `db:"from_name"`
+	FromOfficeName sql.NullString `db:"from_office_name"`
+	ToName         sql.NullString `db:"to_name"`
+	ToOfficeName   sql.NullString `db:"to_office_name"`
+	DetailsCount   sql.NullInt64  `db:"details_count"`
+	Note           sql.NullString `db:"note"`
+}
+
+type InventoryMovementItemReport struct {
+	ID                sql.NullInt64  `db:"id"`
+	NoFaktur          sql.NullString `db:"no_faktur"`
+	NoRef             sql.NullString `db:"no_ref"`
+	NoFakturPGI       sql.NullString `db:"no_faktur_pgi"`
+	IMEISN            sql.NullString `db:"imei_sn"`
+	PawnedAt          sql.NullString `db:"pawned_at"`
+	CreatedAt         sql.NullTime   `db:"created_at"`
+	WarehouseFromName sql.NullString `db:"from_name"`
+	WarehouseToName   sql.NullString `db:"to_name"`
+	OfficeFromName    sql.NullString `db:"office_from_name"`
+	OfficeToName      sql.NullString `db:"office_to_name"`
+	KindName          sql.NullString `db:"kind"`
+	BrandName         sql.NullString `db:"brand"`
+	TypeName          sql.NullString `db:"type"`
+	Year              sql.NullString `db:"year"`
+	SpecName          sql.NullString `db:"spec_name"`
+	Batangan          sql.NullString `db:"batangan"`
+	Grade             sql.NullString `db:"grade"`
+	GradePGI          sql.NullString `db:"grade_pgi"`
+	PriceAtPawn       sql.NullInt64  `db:"price_at_pawn"`
+	Capital           sql.NullInt64  `db:"capital"`
+}
+
+type CatalogCustomerLoginLogs struct {
+	Name      sql.NullString `db:"name"`
+	ShopName  sql.NullString `db:"shop_name"`
+	Email     sql.NullString `db:"email"`
+	Handphone sql.NullString `db:"handphone"`
+	Address   sql.NullString `db:"address"`
+	LoginAt   sql.NullTime   `db:"login_at"`
+}
+
+type UserTaskCountLogsReport struct {
+	ID                 sql.NullInt64  `db:"id"`
+	LogDate            sql.NullTime   `db:"log_date"`
+	FullName           sql.NullString `db:"fullname"`
+	ApproveCount       sql.NullInt64  `db:"approve_count"`
+	InvoiceDetailCount sql.NullInt64  `db:"invoice_detail_count"`
+	ReturnCount        sql.NullInt64  `db:"return_count"`
+	ReqeustResetCount  sql.NullInt64  `db:"request_reset_count"`
+	AdjustmentCount    sql.NullInt64  `db:"adjustment_count"`
+	CetakBarcode       sql.NullInt64  `db:"cetak_barcode"`
+	PindahGudang       sql.NullInt64  `db:"pindah_gudang"`
+	UploadFoto         sql.NullInt64  `db:"upload_foto"`
+	InputAksesoris     sql.NullInt64  `db:"input_aksesoris"`
+}
+
+type InventoryReturnsReport struct {
+	NoFakturPGI   sql.NullString `db:"no_faktur_pgi"`
+	CreatedAt     sql.NullTime   `db:"created_at"`
+	RequestNote   sql.NullString `db:"request_note"`
+	ProcessedAt   sql.NullTime   `db:"processed_at"`
+	ProcessedName sql.NullString `db:"processed_name"`
+	CancelAt      sql.NullTime   `db:"cancel_at"`
+	CancelName    sql.NullString `db:"cancel_name"`
+	CancelNote    sql.NullString `db:"cancel_note"`
+	Status        sql.NullString `db:"status"`
+}
+
+type SendbackReport struct {
+	ID           sql.NullInt64  `db:"id"`
+	NoFaktur     sql.NullString `db:"no_faktur"`
+	SendDate     sql.NullTime   `db:"send_date"`
+	ConfirmedAt  sql.NullTime   `db:"confirmed_at"`
+	Fullname     sql.NullString `db:"fullname"`
+	Status       sql.NullString `db:"status"`
+	Warehouse    sql.NullString `db:"name"`
+	DetailsCount sql.NullInt64  `db:"details_count"`
+	Notes        sql.NullString `db:"notes"`
+}
+
+type SendbackDetailReport struct {
+	NoFaktur           sql.NullString `db:"no_faktur"`
+	NoFakturPGI        sql.NullString `db:"no_faktur_pgi"`
+	CreatedAt          sql.NullTime   `db:"created_at"`
+	KindName           sql.NullString `db:"kind_name"`
+	IMEISN             sql.NullString `db:"imei_sn"`
+	BrandName          sql.NullString `db:"brand_name"`
+	TypeName           sql.NullString `db:"type_name"`
+	Year               sql.NullString `db:"year"`
+	SpecName           sql.NullString `db:"spec_name"`
+	Batangan           sql.NullString `db:"batangan"`
+	Grade              sql.NullString `db:"grade"`
+	GradePGI           sql.NullString `db:"grade_pgi"`
+	FinalPriceAfterAdj sql.NullInt64  `db:"final_price_after_adj"`
+	WarehouseName      sql.NullString `db:"warehouse_name"`
+	AdjName            sql.NullString `db:"adj_name"`
+}

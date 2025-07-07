@@ -95,7 +95,7 @@ func (s *ExportService) generateExcelReturnInvoiceFromDB(headers []interface{}, 
 		cell := fmt.Sprintf("A%d", rowIndex)
 
 		result := []interface{}{i.No.String, i.NoFaktur.String, i.NoRef.String, i.CustomerName.String,
-			i.CreatedAt.Time.Format("2006-01-02"), i.FullName.String, i.Amount.Int64, i.Refund.Int64}
+			i.CreatedAt.Time.Format("02-01-2006"), i.FullName.String, i.Amount.Int64, i.Refund.Int64}
 		err = streamWriter.SetRow(cell, result)
 		if err != nil {
 			return nil, err

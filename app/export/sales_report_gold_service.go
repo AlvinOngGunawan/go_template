@@ -107,9 +107,9 @@ func (s *ExportService) generateExcelSalesReportInvoiceGoldFromDB(headers []inte
 
 		cell := fmt.Sprintf("A%d", rowIndex)
 
-		result := []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.Fullname.String, s.resolveStatus(i.Status.Int64),
+		result := []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.Fullname.String, s.resolveStatus(i.Status.Int64),
 			i.WarehouseName.String, i.OfficeName.String, s.resolvePriceSegmentName(i.PriceSegment.Int64), i.ItemCount.Int64, i.SubTotal.String, i.Discount.Float64,
-			i.DiscountValue.Int64, i.Total.Int64, i.TotalReturn.Int64, i.OutstandingPayment.Int64, i.LastPayment.Time.Format("2006-01-02"), i.Note.String, i.DivisionName.String,
+			i.DiscountValue.Int64, i.Total.Int64, i.TotalReturn.Int64, i.OutstandingPayment.Int64, i.LastPayment.Time.Format("02-01-2006"), i.Note.String, i.DivisionName.String,
 			s.resolveInvoiceType(i.InvoiceType.String)}
 		err = streamWriter.SetRow(cell, result)
 		if err != nil {
@@ -168,14 +168,14 @@ func (s *ExportService) generateExcelSalesReportInvoiceDetailGoldFromDB(headers 
 		var result []interface{}
 
 		if admin {
-			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.IMEISN.String,
-				i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.IMEISN.String,
+				i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
 				i.TypeName.String, i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.NetWeight.String, i.GoldMintMark.String, i.GoldType.String, i.PieceCount.Int64,
 				s.calculateBasePrice(i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.ItemKindID.Int64, i.TypeID.Int64),
 				i.DiscountValue.Int64, i.Total.Int64, i.Capital.Int64, i.PL.Int64}
 		} else {
-			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.IMEISN.String,
-				i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+			result = []interface{}{i.NoFaktur.String, i.NoRef.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.IMEISN.String,
+				i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.Source.String, i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
 				i.TypeName.String, i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.NetWeight.String, i.GoldMintMark.String, i.GoldType.String, i.PieceCount.Int64,
 				s.calculateBasePrice(i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.ItemKindID.Int64, i.TypeID.Int64),
 				i.DiscountValue.Int64, i.Total.Int64}
@@ -236,10 +236,10 @@ func (s *ExportService) generateExcelSalesReportInvoiceReturnGoldFromDB(headers 
 		cell := fmt.Sprintf("A%d", rowIndex)
 		var result []interface{}
 
-		result = []interface{}{i.No.String, i.NoFaktur.String, i.CustomerName.String, i.SoldAt.Time.Format("2006-01-02"), i.NoFakturPGI.String, i.NoRef.String,
-			i.PawnedAt.String, i.CreatedAt.Time.Format("2006-01-02"), i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
+		result = []interface{}{i.No.String, i.NoFaktur.String, i.CustomerName.String, i.SoldAt.Time.Format("02-01-2006"), i.NoFakturPGI.String, i.NoRef.String,
+			i.PawnedAt.String, i.CreatedAt.Time.Format("02-01-2006"), i.WarehouseName.String, i.OfficeName.String, i.KindName.String, i.BrandName.String,
 			i.TypeName.String, i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.NetWeight.String, i.GoldMintMark.String, i.GoldType.String, i.PieceCount.Int64,
-			i.Total.Int64, i.CreatedAtReturn.Time.Format("2006-01-02"),
+			i.Total.Int64, i.CreatedAtReturn.Time.Format("02-01-2006"),
 			i.FullName.String, i.ReturnReason.String}
 
 		err = streamWriter.SetRow(cell, result)

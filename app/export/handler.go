@@ -81,3 +81,84 @@ func (h *ExportHandler) GenerateExcelDeliveryBatch(c echo.Context) error {
 	}
 	return error2.JSON(c, http.StatusOK, file, "")
 }
+
+func (h *ExportHandler) GenerateExcelDeliveryGoldBatch(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	if req.TypeReport == "" {
+		req.TypeReport = "PGI"
+	}
+	file, err := h.svc.GenerateExcelDeliveryGoldReport(req.FromDate, req.ToDate, userID, req.TypeReport)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}
+
+func (h *ExportHandler) GenerateExcelInventoryMovement(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	file, err := h.svc.GenerateExcelInventoryMovementReport(req.FromDate, req.ToDate, userID)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}
+
+func (h *ExportHandler) GenerateExcelCatalogCustomerLoginLog(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	file, err := h.svc.GenerateExcelCatalogCustomerLoginLogs(req.FromDate, req.ToDate, userID)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}
+
+func (h *ExportHandler) GenerateExcelUserTaskCountLogs(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	file, err := h.svc.GenerateExcelUserTaskCountLogs(req.FromDate, req.ToDate, userID)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}
+
+func (h *ExportHandler) GenerateExcelInventoryReturn(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	file, err := h.svc.GenerateExcelInventoryReturn(req.FromDate, req.ToDate, userID)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}
+
+func (h *ExportHandler) GenerateExcelSendbackReport(c echo.Context) error {
+	var req In
+	if err := c.Bind(&req); err != nil {
+		return error2.JSON(c, http.StatusBadRequest, nil, err.Error())
+	}
+	userID := utils.GetUserIDFromToken(c)
+	file, err := h.svc.GenerateExcelSendback(req.FromDate, req.ToDate, userID)
+	if err != nil {
+		return error2.JSON(c, http.StatusInternalServerError, nil, err.Error())
+	}
+	return error2.JSON(c, http.StatusOK, file, "")
+}

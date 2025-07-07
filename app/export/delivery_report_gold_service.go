@@ -2,7 +2,6 @@ package export
 
 import (
 	"Test_Go/app/export/constanta"
-	"Test_Go/utils"
 	"errors"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -10,53 +9,52 @@ import (
 	"time"
 )
 
-func (s *ExportService) GenerateExcelDeliveryReport(startDate, endDate string, userID int, typeReport string) (filename string, err error) {
+func (s *ExportService) GenerateExcelDeliveryGoldReport(startDate, endDate string, userID int, typeReport string) (filename string, err error) {
 	s.f = excelize.NewFile()
 	defer s.f.Close()
 
-	filename = fmt.Sprintf("Laporan Penerimaan Barang %s - %s - %s.xlsx", startDate, endDate, time.Now().String())
+	filename = fmt.Sprintf("Laporan Penerimaan Barang Emas %s - %s - %s.xlsx", startDate, endDate, time.Now().String())
 
-	//customer transaction
 	headers := constanta.HeaderDeliveryBatchReport
 
 	if typeReport == "EXT" {
-		filename = fmt.Sprintf("Laporan Penerimaan Barang External %s - %s - %s.xlsx", startDate, endDate, time.Now().String())
-		query, args, err := sqlx.In(constanta.QueryExportDeliveryBatchEXTReport, constanta.GoldDivision, userID, userID)
+		filename = fmt.Sprintf("Laporan Penerimaan Barang Emas External %s - %s - %s.xlsx", startDate, endDate, time.Now().String())
+		query, args, err := sqlx.In(constanta.QueryExportDeliveryBatchGoldEXTReport, constanta.GoldDivision, userID)
 		if err != nil {
 			return "", err
 		}
-		listID, errs := s.generateExcelDeliveryBatchFromDB(headers, query, args, "Batch Pengiriman")
+		listID, errs := s.generateExcelDeliveryBatchGoldFromDB(headers, query, args, "Batch Pengiriman")
 		if errs != nil {
 			return "", errs
 		}
 
 		//item
-		headers = constanta.HeaderDeliveryItemEXTReport
-		query, args, err = sqlx.In(constanta.QueryExportDeliveryItemEXTReport, constanta.GoldDivision, userID, startDate, endDate, listID)
+		headers = constanta.HeaderDeliveryItemGoldEXTReport
+		query, args, err = sqlx.In(constanta.QueryExportDeliveryItemGoldEXTReport, constanta.GoldDivision, userID, startDate, endDate, listID)
 		if err != nil {
 			return "", err
 		}
-		errs = s.generateExcelDeliveryBatchItemEXTFromDB(headers, query, args, "List Barang Pengiriman")
+		errs = s.generateExcelDeliveryBatchItemGoldEXTFromDB(headers, query, args, "List Barang Pengiriman")
 		if errs != nil {
 			return "", errs
 		}
 	} else {
-		query, args, err := sqlx.In(constanta.QueryExportDeliveryBatchReport, constanta.GoldDivision, userID, userID, startDate, endDate)
+		query, args, err := sqlx.In(constanta.QueryExportDeliveryBatchGoldReport, constanta.GoldDivision, userID, startDate, endDate)
 		if err != nil {
 			return "", err
 		}
-		listID, errs := s.generateExcelDeliveryBatchFromDB(headers, query, args, "Batch Pengiriman")
+		listID, errs := s.generateExcelDeliveryBatchGoldFromDB(headers, query, args, "Batch Pengiriman")
 		if errs != nil {
 			return "", errs
 		}
 
 		//item
-		headers = constanta.HeaderDeliveryItemReport
-		query, args, err = sqlx.In(constanta.QueryExportDeliveryItemReport, constanta.GoldDivision, userID, listID)
+		headers = constanta.HeaderDeliveryItemGoldReport
+		query, args, err = sqlx.In(constanta.QueryExportDeliveryItemGoldReport, constanta.GoldDivision, userID, listID)
 		if err != nil {
 			return "", err
 		}
-		errs = s.generateExcelDeliveryBatchItemFromDB(headers, query, args, "List Barang Pengiriman")
+		errs = s.generateExcelDeliveryBatchItemGoldFromDB(headers, query, args, "List Barang Pengiriman")
 		if errs != nil {
 			return "", errs
 		}
@@ -69,7 +67,7 @@ func (s *ExportService) GenerateExcelDeliveryReport(startDate, endDate string, u
 	return filename, err
 }
 
-func (s *ExportService) generateExcelDeliveryBatchFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (listID []int64, err error) {
+func (s *ExportService) generateExcelDeliveryBatchGoldFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (listID []int64, err error) {
 	if sheetName == "" {
 		sheetName = "Sheet1"
 	} else {
@@ -124,7 +122,7 @@ func (s *ExportService) generateExcelDeliveryBatchFromDB(headers []interface{}, 
 	return
 }
 
-func (s *ExportService) generateExcelDeliveryBatchItemEXTFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (err error) {
+func (s *ExportService) generateExcelDeliveryBatchItemGoldEXTFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (err error) {
 	if sheetName == "" {
 		sheetName = "Sheet1"
 	} else {
@@ -156,7 +154,7 @@ func (s *ExportService) generateExcelDeliveryBatchItemEXTFromDB(headers []interf
 	rowIndex := 2
 
 	for rows.Next() {
-		var i DeliveryBatchItemReport
+		var i DeliveryBatchItemGoldEXTReport
 		if err = rows.StructScan(&i); err != nil {
 			return
 		}
@@ -164,74 +162,11 @@ func (s *ExportService) generateExcelDeliveryBatchItemEXTFromDB(headers []interf
 		cell := fmt.Sprintf("A%d", rowIndex)
 
 		result := []interface{}{i.Date.Time.Format("02-01-2006"), i.Branch.String, i.Source.String,
-			i.NoFakturPGI.String, i.IMEISN.String, i.KindName.String, i.BrandName.String, i.TypeName.String,
-			i.Year.String, i.PawnedAt.String, s.resolveStatusDelivery(i.Status.Int64), i.GradePGI.String, i.BatanganPGI.String,
-			i.PriceAtPawn.Int64, i.BasePrice.Int64, i.FinalPrice.Int64, i.Capital.Int64, i.Grade.String, i.SpecName.String,
-			i.Batangan.String, i.WarehouseName.String,
-			utils.DecodeAccessoriesArrayToString(i.MissingAccessories.String, "-"),
-			utils.DecodeAccessoriesArrayToString(i.NotOriAccessories.String, "-"),
-			i.FullName.String, i.ApprovedAt.Time.Format("02-01-2006"),
-			i.ApprovedAt.Time.Format("15:04:05"), i.Description.String}
-		err = streamWriter.SetRow(cell, result)
-		if err != nil {
-			return
-		}
-		rowIndex++
-	}
-
-	if err = streamWriter.Flush(); err != nil {
-		return
-	}
-
-	return
-}
-
-func (s *ExportService) generateExcelDeliveryBatchItemFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (err error) {
-	if sheetName == "" {
-		sheetName = "Sheet1"
-	} else {
-		_, err = s.f.NewSheet(sheetName)
-		if err != nil {
-			return
-		}
-		s.f.DeleteSheet("Sheet1")
-	}
-
-	streamWriter, err := s.f.NewStreamWriter(sheetName)
-	if err != nil {
-		return
-	}
-	// write header
-	if err = streamWriter.SetRow("A1", headers); err != nil {
-		return
-	}
-
-	rows, err := s.repo.DB.Queryx(query, param...)
-	if err != nil {
-		return
-	}
-	defer rows.Close()
-	if rows == nil {
-		return errors.New("Data Not Found")
-	}
-
-	rowIndex := 2
-
-	for rows.Next() {
-		var i DeliveryBatchItemReport
-		if err = rows.StructScan(&i); err != nil {
-			return
-		}
-
-		cell := fmt.Sprintf("A%d", rowIndex)
-
-		result := []interface{}{i.Date.Time.Format("02-01-2006"), i.Branch.String, i.Source.String,
-			i.NoFakturPGI.String, i.IMEISN.String, i.KindName.String, i.BrandName.String, i.TypeName.String,
-			i.Year.String, i.PawnedAt.String, s.resolveStatusDelivery(i.Status.Int64), i.GradePGI.String, i.BatanganPGI.String,
-			i.PriceAtPawn.Int64, i.BasePrice.Int64, i.FinalPrice.Int64, i.Grade.String, i.SpecName.String,
-			i.Batangan.String, i.WarehouseName.String,
-			utils.DecodeAccessoriesArrayToString(i.MissingAccessories.String, "-"),
-			utils.DecodeAccessoriesArrayToString(i.NotOriAccessories.String, "-"),
+			i.NoFakturPGI.String, i.KindName.String, i.BrandName.String, i.TypeName.String,
+			i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.NetWeight.String,
+			i.GoldMintMark.String, i.GoldType.String, i.PieceCount.Int64, s.resolveStatusDeliveryGold(i.Status.Int64),
+			s.calculateBasePrice(i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.ItemKindID.Int64, i.ItemTypeID.Int64),
+			i.WarehouseName.String, i.IsCap.String,
 			i.FullName.String, i.ApprovedAt.Time.Format("02-01-2006"),
 			i.ApprovedAt.Time.Format("15:04:05")}
 		err = streamWriter.SetRow(cell, result)
@@ -248,7 +183,69 @@ func (s *ExportService) generateExcelDeliveryBatchItemFromDB(headers []interface
 	return
 }
 
-func (s *ExportService) resolveStatusDelivery(status int64) string {
+func (s *ExportService) generateExcelDeliveryBatchItemGoldFromDB(headers []interface{}, query string, param []interface{}, sheetName string) (err error) {
+	if sheetName == "" {
+		sheetName = "Sheet1"
+	} else {
+		_, err = s.f.NewSheet(sheetName)
+		if err != nil {
+			return
+		}
+		s.f.DeleteSheet("Sheet1")
+	}
+
+	streamWriter, err := s.f.NewStreamWriter(sheetName)
+	if err != nil {
+		return
+	}
+	// write header
+	if err = streamWriter.SetRow("A1", headers); err != nil {
+		return
+	}
+
+	rows, err := s.repo.DB.Queryx(query, param...)
+	if err != nil {
+		return
+	}
+	defer rows.Close()
+	if rows == nil {
+		return errors.New("Data Not Found")
+	}
+
+	rowIndex := 2
+
+	for rows.Next() {
+		var i DeliveryBatchItemGoldReport
+		if err = rows.StructScan(&i); err != nil {
+			return
+		}
+
+		cell := fmt.Sprintf("A%d", rowIndex)
+
+		result := []interface{}{i.Date.Time.Format("02-01-2006"), i.Branch.String, i.Source.String,
+			i.NoFakturPGI.String, i.KindName.String, i.BrandName.String, i.TypeName.String,
+			i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.NetWeight.String,
+			i.GoldMintMark.String, i.GoldType.String, i.PieceCount.Int64, i.PawnedAt.Time.Format("02-01-2006"), s.resolveStatusDeliveryGold(i.Status.Int64),
+			i.GradePGI.String, i.PriceAtPawn.Int64,
+			s.calculateBasePrice(i.Purity.Int64, i.DryWeight.Float64, i.WeightReduction.Float64, i.ItemKindID.Int64, i.ItemTypeID.Int64),
+			i.WarehouseName.String, i.IsCap.String,
+			i.FullName.String, i.ApprovedAt.Time.Format("02-01-2006"),
+			i.ApprovedAt.Time.Format("15:04:05")}
+		err = streamWriter.SetRow(cell, result)
+		if err != nil {
+			return
+		}
+		rowIndex++
+	}
+
+	if err = streamWriter.Flush(); err != nil {
+		return
+	}
+
+	return
+}
+
+func (s *ExportService) resolveStatusDeliveryGold(status int64) string {
 	if status == 6 || status == 66 {
 		return "Kirim Balik PGI"
 	} else if status == 5 || status == 55 {
